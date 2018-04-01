@@ -7,6 +7,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import reducer from './reducers'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import { BrowserRouter } from 'react-router-dom';
 
 const logger = store => next => action => {
   console.group(action.type)
@@ -27,9 +28,11 @@ const store = createStore(
 )
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter >,
   document.getElementById('root')
 )
 registerServiceWorker()

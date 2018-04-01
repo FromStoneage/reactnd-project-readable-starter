@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Route } from 'react-router-dom';
 
 // components
 import TopNav from './components/TopNav';
@@ -19,14 +20,16 @@ class App extends Component {
     const { categories, posts } = this.props
     return (
       <MuiThemeProvider>
-        <div>
-          <TopNav
-            categories={categories}
-          />
-          <ListView
-            posts={posts}
-          />
-        </div>
+        <Route exact path='/' render={() => (
+          <div>
+            <TopNav
+              categories={categories}
+            />
+            <ListView
+              posts={posts}
+            />
+          </div>
+        )} />
       </MuiThemeProvider>
     );
   }
