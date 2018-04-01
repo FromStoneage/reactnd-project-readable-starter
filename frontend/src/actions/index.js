@@ -2,6 +2,8 @@ import * as Api from '../utils/api';
 
 export const UPDATE_CATEGORIES = 'UPDATE_CATEGORIES'
 export const UPDATE_POSTS = 'UPDATE_POSTS'
+export const UPDATE_POSTS_BY_CATEGORY = 'UPDATE_POSTS_BY_CATEGORY'
+export const GO_TO_CATEGORY = 'GO_TO_CATEGORY'
 export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
 
@@ -26,6 +28,16 @@ export const fetchPosts = () => (dispatch) => {
     .getAllPosts()
     .then(posts => dispatch(updatePosts(posts)))
 }
+
+export const updateCategoryPosts = (posts) => ({
+  type: UPDATE_POSTS_BY_CATEGORY,
+  posts
+})
+
+export const goToCategory = (category) => ({
+  type: GO_TO_CATEGORY,
+  selectedCategory: category
+})
 
 export function addPost ({ title, body, author, category }) {
   return {

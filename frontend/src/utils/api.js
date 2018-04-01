@@ -23,34 +23,82 @@ export const getPostsByCategory = (category) =>
   fetch(`${api}/${category}/posts`, { headers })
     .then(res => res.json())
 
+export const getPostDetails = (postId) =>
+  fetch(`${api}/posts/${postId}`, { headers })
+    .then(res => res.json())
 
-// export const get = (bookId) =>
-//   fetch(`${api}/books/${bookId}`, { headers })
-//     .then(res => res.json())
-//     .then(data => data.book)
+export const getPostComments = (postId) =>
+  fetch(`${api}/posts/${postId}/comments`, { headers })
+    .then(res => res.json())
 
-// export const getAll = () =>
-//   fetch(`${api}/books`, { headers })
-//     .then(res => res.json())
-//     .then(data => data.books)
+export const deletePost = (postId) =>
+  fetch(`${api}/posts/${postId}`, {
+    headers,
+    method: 'DELETE'
+  }).then(res => res.json())
 
-// export const update = (book, shelf) =>
-//   fetch(`${api}/books/${book.id}`, {
-//     method: 'PUT',
-//     headers: {
-//       ...headers,
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ shelf })
-//   }).then(res => res.json())
+export const editPost = (postId, data) =>
+  fetch(`${api}/posts/${postId}`, {
+    headers,
+    method: 'PUT',
+    body: JSON.stringify(data)
+  }).then(res => res.json())
 
-// export const search = (query, maxResults) =>
-//   fetch(`${api}/search`, {
-//     method: 'POST',
-//     headers: {
-//       ...headers,
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ query, maxResults })
-//   }).then(res => res.json())
-//     .then(data => data.books)
+export const votePost = (vote) => (postId) => {
+  return fetch(`${api}/posts/${postId}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ option: vote })
+  }).then(res => res.json())
+}
+
+export const deleteComment = (commentId) =>
+  fetch(`${api}/comments/${commentId}`, {
+    headers,
+    method: 'DELETE'
+  }).then(res => res.json())
+
+export const editComment = (commentId, data) =>
+  fetch(`${api}/comments/${commentId}`, {
+    headers,
+    method: 'PUT',
+    body: JSON.stringify(data)
+  }).then(res => res.json())
+
+export const voteComment = (vote) => (commentId) => {
+  return fetch(`${api}/comments/${commentId}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ option: vote })
+  }).then(res => res.json())
+}
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8) // eslint-disable-line
+    return v.toString(16)
+  })
+}
+
+export const createComment = (data) => {
+  data.timestamp = Date.now()
+  data.id = generateUUID()
+
+  return fetch(`${api}/comments/`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify(data)
+  }).then(res => res.json())
+}
+
+export const createPost = (data) => {
+  data.timestamp = Date.now()
+  data.id = generateUUID()
+
+  return fetch(`${api}/posts/`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify(data)
+  }).then(res => res.json())
+}

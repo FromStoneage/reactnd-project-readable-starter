@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 // components
 import TopNav from './components/TopNav';
@@ -20,16 +20,26 @@ class App extends Component {
     const { categories, posts } = this.props
     return (
       <MuiThemeProvider>
-        <Route exact path='/' render={() => (
-          <div>
-            <TopNav
-              categories={categories}
-            />
-            <ListView
-              posts={posts}
-            />
-          </div>
-        )} />
+        <div>
+          <Route exact path='/' component={() => (
+            <div>
+              <TopNav categories={categories} />
+              <ListView
+                posts={posts}
+              />
+            </div>
+          )} />
+          <Route path='/:category' component={(match) => (
+            <div>
+              <TopNav categories={categories} />
+              <ListView
+                posts={posts}
+                match={match}
+              />
+            </div>
+          )} />
+
+        </div>
       </MuiThemeProvider>
     );
   }
@@ -49,4 +59,4 @@ function matchDispatchToProps(dispatch) {
   }
 }
 
-export default connect(matchStateToProps, matchDispatchToProps)(App);
+export default withRouter(connect(matchStateToProps, matchDispatchToProps)(App));
