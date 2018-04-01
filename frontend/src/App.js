@@ -5,31 +5,44 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // components
 import TopNav from './components/TopNav';
+import ListView from './components/ListView';
 // actions
-import { fetchCategories } from './actions';
+import { fetchCategories, fetchPosts } from './actions';
 
 class App extends Component {
   componentWillMount() {
     this.props.loadCategories()
+    this.props.loadPosts()
   }
 
   render() {
-    const { categories } = this.props
+    const { categories, posts } = this.props
     return (
       <MuiThemeProvider>
-        <TopNav categories={categories}/>
+        <div>
+          <TopNav
+            categories={categories}
+          />
+          <ListView
+            posts={posts}
+          />
+        </div>
       </MuiThemeProvider>
     );
   }
 }
 
-function matchStateToProps({ categories }){
-  return { categories }
+function matchStateToProps({ categories, posts }) {
+  return {
+    categories,
+    posts
+  }
 }
 
 function matchDispatchToProps(dispatch) {
   return {
-    loadCategories: () => dispatch(fetchCategories())
+    loadCategories: () => dispatch(fetchCategories()),
+    loadPosts: () => dispatch(fetchPosts())
   }
 }
 
