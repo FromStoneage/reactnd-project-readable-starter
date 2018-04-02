@@ -29,6 +29,10 @@ export const fetchPostsByCategory = category => dispatch => {
   Api.getPostsByCategory(category).then(posts => dispatch(updatePosts(posts)));
 };
 
+export const fetchPostsByPostId = postId => dispatch => {
+  Api.getPostById(postId).then(posts => dispatch(updatePosts(posts)));
+};
+
 export function addPost({ title, body, author, category }) {
   return {
     type: ADD_POST,

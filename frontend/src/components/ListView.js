@@ -1,31 +1,50 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Card, CardActions, CardTitle, CardText } from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
+import { withRouter } from "react-router-dom";
 //actions
-import { fetchPosts, fetchPostsByCategory } from "../actions";
+import {
+  fetchPosts,
+  fetchPostsByCategory,
+  fetchPostsByPostId
+} from "../actions";
 
 class ListView extends Component {
   componentWillMount() {
-    const category = this.props.match && this.props.match.match.params.category;
-    if (category) {
-      this.props.lostPostsByCategory(category);
+    const category = this.props.match && this.props.match.params.category;
+    const postId = this.props.match && this.props.match.params.postId;
+    if (postId) {
+      this.props.loadPostById(postId);
+    } else if (category) {
+      this.props.loadPostsByCategory(category);
     } else {
       this.props.loadPosts();
     }
   }
+
+  handleCallToRouter = post => {
+    this.props.history.replace(`${post.category}/${post.id}`);
+  };
 
   renderPost(post) {
     return (
       <Card key={post.id}>
         <CardTitle
           title={post.title}
-          subtitle={`posted in ${post.category} - by ${post.author}`}
+          style={{ cursor: "pointer" }}
+          onClick={() => this.handleCallToRouter(post)}
+          subtitle={`${post.voteScore} score, posted in ${post.category} - by ${
+            post.author
+          }`}
         />
         <CardText>{post.body}</CardText>
         <CardActions>
-          <FlatButton label="Comment" />
-          <FlatButton label="Delete" />
+          <RaisedButton label="↑" />
+          <RaisedButton label="↓" />
+          <RaisedButton label={`Comment (${post.commentCount})`} />
+          <RaisedButton label="Edit" />
+          <RaisedButton label="Delete" />
         </CardActions>
       </Card>
     );
@@ -33,15 +52,12 @@ class ListView extends Component {
 
   render() {
     const { posts } = this.props;
-    console.log(posts)
-    // const category = this.props.match && this.props.match.match.params.category;
-    // if (category && posts) {
-    //   return (
-    //     posts.filter((p) => p.category === category).map((post) => this.renderPost(post))
-    //   )
-    // }
 
-    return posts.map(post => this.renderPost(post));
+    if (posts.length) {
+      return posts.map(post => this.renderPost(post));
+    }
+    // super hacky render single post
+    return this.renderPost(posts);
   }
 }
 
@@ -54,8 +70,11 @@ function matchStateToProps({ posts }) {
 function matchDispatchToProps(dispatch) {
   return {
     loadPosts: () => dispatch(fetchPosts()),
-    lostPostsByCategory: category => dispatch(fetchPostsByCategory(category))
+    loadPostsByCategory: category => dispatch(fetchPostsByCategory(category)),
+    loadPostById: postId => dispatch(fetchPostsByPostId(postId))
   };
 }
 
-export default connect(matchStateToProps, matchDispatchToProps)(ListView);
+export default withRouter(
+  connect(matchStateToProps, matchDispatchToProps)(ListView)
+);

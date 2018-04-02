@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 class TopNav extends Component {
   handleCallToRouter = (value) => {
-    this.props.history.push(value);
+    this.props.history.replace(value);
   }
 
   render() {

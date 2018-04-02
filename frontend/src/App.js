@@ -24,10 +24,11 @@ class App extends Component {
           <Route exact path='/' component={() => (
             <ListView />
           )} />
-          <Route path='/:category' component={(match) => (
-            <ListView
-              match={match}
-            />
+          <Route exact path='/:category' component={(match) => (
+            <ListView match={match} />
+          )} />
+          <Route exact path='/:category/:postId' component={(match) => (
+            <ListView match={match} />
           )} />
         </div>
       </MuiThemeProvider>
