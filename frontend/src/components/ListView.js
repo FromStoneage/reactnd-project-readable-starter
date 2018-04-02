@@ -24,7 +24,7 @@ class ListView extends Component {
   }
 
   handleCallToRouter = post => {
-    this.props.history.replace(`${post.category}/${post.id}`);
+    this.props.history.push(`/${post.category}/${post.id}`);
   };
 
   renderPost(post) {
