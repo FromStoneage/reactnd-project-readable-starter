@@ -8,54 +8,42 @@ import { Route, withRouter } from 'react-router-dom';
 import TopNav from './components/TopNav';
 import ListView from './components/ListView';
 // actions
-import { fetchCategories, fetchPosts } from './actions';
+import { fetchCategories } from './actions';
 
 class App extends Component {
   componentWillMount() {
     this.props.loadCategories()
-    this.props.loadPosts()
   }
 
   render() {
-    const { categories, posts } = this.props
+    const { categories } = this.props
     return (
       <MuiThemeProvider>
         <div>
+          <TopNav categories={categories} />
           <Route exact path='/' component={() => (
-            <div>
-              <TopNav categories={categories} />
-              <ListView
-                posts={posts}
-              />
-            </div>
+            <ListView />
           )} />
           <Route path='/:category' component={(match) => (
-            <div>
-              <TopNav categories={categories} />
-              <ListView
-                posts={posts}
-                match={match}
-              />
-            </div>
+            <ListView
+              match={match}
+            />
           )} />
-
         </div>
       </MuiThemeProvider>
     );
   }
 }
 
-function matchStateToProps({ categories, posts }) {
+function matchStateToProps({ categories }) {
   return {
-    categories,
-    posts
+    categories
   }
 }
 
 function matchDispatchToProps(dispatch) {
   return {
-    loadCategories: () => dispatch(fetchCategories()),
-    loadPosts: () => dispatch(fetchPosts())
+    loadCategories: () => dispatch(fetchCategories())
   }
 }
 
