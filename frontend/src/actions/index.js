@@ -5,8 +5,14 @@ export const GET_ALL_POSTS = "GET_ALL_POSTS";
 export const GET_POST_BY_CATEGORY = "GET_POST_BY_CATEGORY";
 export const GET_POST_BY_ID = "GET_POST_BY_ID";
 export const GET_POST_COMMENTS = "GET_POST_COMMENTS";
+export const VOTE_POST_UP = "VOTE_POST_UP";
+export const VOTE_POST_DOWN = "VOTE_POST_DOWN";
+export const VOTE_COMMENT_UP = "VOTE_COMMENT_UP";
+export const VOTE_COMMENT_DOWN = "VOTE_COMMENT_DOWN";
 export const ADD_POST = "ADD_POST";
 export const DELETE_POST = "DELETE_POST";
+export const EDIT_POST = "EDIT_POST";
+export const SORT_POSTS = "SORT_POSTS";
 
 export const updateCategories = categories => ({
   type: UPDATE_CATEGORIES,
@@ -21,7 +27,12 @@ export const updatePosts = (type, posts) => ({
 export const updatePostComments = comments => ({
   type: GET_POST_COMMENTS,
   comments
-})
+});
+
+export const updatePostVote = (type, posts) => ({
+  type,
+  posts
+});
 
 export const fetchCategories = () => dispatch => {
   Api.getAllCategories().then(categories =>
@@ -34,16 +45,26 @@ export const fetchPosts = () => dispatch => {
 };
 
 export const fetchPostsByCategory = category => dispatch => {
-  Api.getPostsByCategory(category).then(posts => dispatch(updatePosts(GET_POST_BY_CATEGORY, posts)));
+  Api.getPostsByCategory(category).then(posts =>
+    dispatch(updatePosts(GET_POST_BY_CATEGORY, posts))
+  );
 };
 
 export const fetchPostsByPostId = postId => dispatch => {
-  Api.getPostById(postId).then(posts => dispatch(updatePosts(GET_POST_BY_ID, posts)));
+  Api.getPostById(postId).then(posts =>
+    dispatch(updatePosts(GET_POST_BY_ID, posts))
+  );
 };
 
 export const fetchPostComments = postId => dispatch => {
   Api.getPostComments(postId).then(comments =>
     dispatch(updatePostComments(comments))
+  );
+};
+
+export const votePost = (vote, postId) => dispatch => {
+  Api.votePost(vote, postId).then(posts =>
+    dispatch(updatePostVote(VOTE_POST_UP, posts))
   );
 };
 

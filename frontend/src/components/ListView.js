@@ -8,7 +8,8 @@ import {
   fetchPosts,
   fetchPostsByCategory,
   fetchPostsByPostId,
-  fetchPostComments
+  fetchPostComments,
+  votePost
 } from "../actions";
 
 class ListView extends Component {
@@ -76,7 +77,7 @@ class ListView extends Component {
         />
         <CardText>{post.body}</CardText>
         <CardActions>
-          <RaisedButton label="↑" />
+          <RaisedButton label="↑" onClick={() => this.props.votePostUp(post.id)} />
           <RaisedButton label="↓" />
           <RaisedButton
             label={`Comment (${post.commentCount})`}
@@ -112,7 +113,8 @@ function matchDispatchToProps(dispatch) {
     loadPosts: () => dispatch(fetchPosts()),
     loadPostsByCategory: category => dispatch(fetchPostsByCategory(category)),
     loadPostById: postId => dispatch(fetchPostsByPostId(postId)),
-    loadPostComments: postId => dispatch(fetchPostComments(postId))
+    loadPostComments: postId => dispatch(fetchPostComments(postId)),
+    votePostUp: postId => dispatch(votePost('upVote')(postId))
   };
 }
 
