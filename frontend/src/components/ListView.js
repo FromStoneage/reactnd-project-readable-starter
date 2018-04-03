@@ -96,11 +96,7 @@ class ListView extends Component {
   render() {
     const { posts } = this.props;
 
-    if (posts.length) {
-      return posts.map(post => this.renderPost(post));
-    }
-    // super hacky render single post
-    return this.renderPost(posts);
+    return posts.map(post => this.renderPost(post));
   }
 }
 
