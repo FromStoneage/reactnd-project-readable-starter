@@ -38,23 +38,24 @@ class ListView extends Component {
 
   loadPostComments = post => {
     this.props.loadPostComments(post.id);
-    console.log("loading post", this.state.showComments);
     this.setState({
       showComments: true
     });
-
-    console.log("loading post", this.state.showComments);
   };
 
   renderComment(comment, postId) {
-    return comment.parentId == postId ? (
-      <div key={comment.id}>
-        <p>{comment.body}</p>
-        by -
-        <span> {comment.author}</span>
-        <br />
-        score: {comment.voteScore}
-      </div>
+    return comment.parentId === postId ? (
+      <Card key={comment.id}>
+        <CardTitle
+          title={comment.body}
+          style={{ fontSize: '14px' }}
+          subtitle={`${comment.voteScore} score, by ${comment.author}`}
+        />
+        <RaisedButton label="↑" />
+        <RaisedButton label="↓" />
+        <RaisedButton label="Edit" />
+        <RaisedButton label="Delete" />
+      </Card>
     ) : (
       ""
     );
