@@ -22,6 +22,7 @@ class ListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSinglePostView: false,
       showComments: false,
       selectedCategory: undefined
     };
@@ -33,10 +34,13 @@ class ListView extends Component {
     if (postId) {
       this.props.loadPostById(postId);
       this.props.loadPostComments(postId);
+      this.setState({ isSinglePostView: true });
     } else if (category) {
       this.props.loadPostsByCategory(category);
+      this.setState({ isSinglePostView: false });
     } else {
       this.props.loadPosts();
+      this.setState({ isSinglePostView: false });
     }
   }
 
@@ -117,6 +121,24 @@ class ListView extends Component {
     );
   }
 
+  renderNewComment() {
+    return (
+      <Card key={Math.random()}>
+        <CardTitle title="New Comment" />
+        <CardActions>
+          <TextField hintText="New Comment here" floatingLabelText="New Comment" />
+          <br />
+          <TextField hintText="Author here" floatingLabelText="Author" />
+          <br />
+        </CardActions>
+        <RaisedButton
+          label="Create New Comment"
+          onClick={() => console.log("submit")}
+        />
+      </Card>
+    )
+  }
+
   renderNewPost() {
     const { categories } = this.props;
     console.log("categories", categories);
@@ -153,7 +175,7 @@ class ListView extends Component {
         </CardActions>
         <RaisedButton
           label="Create New Post"
-          onClick={() => console.log('submit')}
+          onClick={() => console.log("submit")}
         />
       </Card>
     );
@@ -165,7 +187,7 @@ class ListView extends Component {
     return (
       <div>
         {posts.map(post => this.renderPost(post))}
-        {this.renderNewPost()}
+        {this.state.isSinglePostView? this.renderNewComment():this.renderNewPost()}
       </div>
     );
   }
