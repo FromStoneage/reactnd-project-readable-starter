@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Card, CardActions, CardTitle, CardText } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
-import { withRouter } from "react-router-dom";
+import TextField from "material-ui/TextField";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 //actions
 import {
   fetchPosts,
@@ -19,7 +22,8 @@ class ListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showComments: false
+      showComments: false,
+      selectedCategory: undefined
     };
   }
 
@@ -40,6 +44,10 @@ class ListView extends Component {
     this.props.history.push(`/${post.category}/${post.id}`);
   };
 
+  handleCategoryChange = (event, index, selectedCategory) => {
+    this.setState({ selectedCategory });
+  };
+
   loadPostComments = post => {
     this.props.loadPostComments(post.id);
     this.setState({
@@ -52,11 +60,17 @@ class ListView extends Component {
       <Card key={comment.id}>
         <CardTitle
           title={comment.body}
-          style={{ fontSize: '14px' }}
+          style={{ fontSize: "14px" }}
           subtitle={`${comment.voteScore} score, by ${comment.author}`}
         />
-        <RaisedButton label="↑" onClick={() => this.props.voteCommentUp(comment.id)} />
-        <RaisedButton label="↓" onClick={() => this.props.voteCommentDown(comment.id)} />
+        <RaisedButton
+          label="↑"
+          onClick={() => this.props.voteCommentUp(comment.id)}
+        />
+        <RaisedButton
+          label="↓"
+          onClick={() => this.props.voteCommentDown(comment.id)}
+        />
         <RaisedButton label="Edit" />
         <RaisedButton label="Delete" />
       </Card>
@@ -80,8 +94,14 @@ class ListView extends Component {
         />
         <CardText>{post.body}</CardText>
         <CardActions>
-          <RaisedButton label="↑" onClick={() => this.props.votePostUp(post.id)} />
-          <RaisedButton label="↓" onClick={() => this.props.votePostDown(post.id)}/>
+          <RaisedButton
+            label="↑"
+            onClick={() => this.props.votePostUp(post.id)}
+          />
+          <RaisedButton
+            label="↓"
+            onClick={() => this.props.votePostDown(post.id)}
+          />
           <RaisedButton
             label={`Comment (${post.commentCount})`}
             onClick={() => this.loadPostComments(post)}
@@ -97,10 +117,57 @@ class ListView extends Component {
     );
   }
 
+  renderNewPost() {
+    const { categories } = this.props;
+    console.log("categories", categories);
+    return (
+      <Card key={Math.random()}>
+        <CardTitle title="New Post" />
+        <CardActions>
+          <TextField hintText="Title here" floatingLabelText="Title" />
+          <br />
+          <TextField
+            multiLine={true}
+            rows={4}
+            hintText="Body here"
+            floatingLabelText="Body"
+          />
+          <br />
+          <TextField hintText="Author here" floatingLabelText="Author" />
+          <br />
+          <SelectField
+            floatingLabelText="Select a category"
+            value={this.state.selectedCategory}
+            onChange={this.handleCategoryChange}
+          >
+            {categories.map(category => {
+              return (
+                <MenuItem
+                  key={category.name}
+                  value={category.name}
+                  primaryText={category.name}
+                />
+              );
+            })}
+          </SelectField>
+        </CardActions>
+        <RaisedButton
+          label="Create New Post"
+          onClick={() => console.log('submit')}
+        />
+      </Card>
+    );
+  }
+
   render() {
     const { posts } = this.props;
 
-    return posts.map(post => this.renderPost(post));
+    return (
+      <div>
+        {posts.map(post => this.renderPost(post))}
+        {this.renderNewPost()}
+      </div>
+    );
   }
 }
 

@@ -24,16 +24,16 @@ class App extends Component {
         <div>
           <TopNav categories={categories} />
           <Switch>
-            <Route exact path="/" component={() => <ListView />} />
+            <Route exact path="/" component={() => <ListView categories={categories} />} />
             <Route
               exact
               path="/:category"
-              component={match => <ListView match={match} />}
+              component={match => <ListView match={match} categories={categories} />}
             />
             <Route
               exact
               path="/:category/:postId"
-              component={match => <ListView match={match} />}
+              component={match => <ListView match={match} categories={categories} />}
             />
           </Switch>
         </div>
