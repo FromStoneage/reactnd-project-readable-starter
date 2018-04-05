@@ -9,6 +9,9 @@ export const VOTE_POST_UP = "VOTE_POST_UP";
 export const VOTE_POST_DOWN = "VOTE_POST_DOWN";
 export const VOTE_COMMENT_UP = "VOTE_COMMENT_UP";
 export const VOTE_COMMENT_DOWN = "VOTE_COMMENT_DOWN";
+export const CREATE_COMMENT = "CREATE_COMMENT";
+export const EDIT_COMMENT = "EDIT_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
 export const ADD_POST = "ADD_POST";
 export const DELETE_POST = "DELETE_POST";
 export const EDIT_POST = "EDIT_POST";
@@ -32,6 +35,11 @@ export const updatePostComments = comments => ({
 export const updatePostVote = (type, posts) => ({
   type,
   posts
+});
+
+export const updateCommentVote = (type, comments) => ({
+  type,
+  comments
 });
 
 export const fetchCategories = () => dispatch => {
@@ -71,6 +79,18 @@ export const votePostUp = postId => dispatch => {
 export const votePostDown = postId => dispatch => {
   Api.votePostDown(postId).then(post =>
     dispatch(updatePostVote(VOTE_POST_DOWN, post))
+  );
+};
+
+export const voteCommentUp = commentId => dispatch => {
+  Api.voteCommentUp(commentId).then(comment =>
+    dispatch(updateCommentVote(VOTE_COMMENT_UP, comment))
+  );
+};
+
+export const voteCommentDown = commentId => dispatch => {
+  Api.voteCommentDown(commentId).then(comment =>
+    dispatch(updateCommentVote(VOTE_COMMENT_DOWN, comment))
   );
 };
 

@@ -10,7 +10,9 @@ import {
   fetchPostsByPostId,
   fetchPostComments,
   votePostUp,
-  votePostDown
+  votePostDown,
+  voteCommentUp,
+  voteCommentDown
 } from "../actions";
 
 class ListView extends Component {
@@ -53,8 +55,8 @@ class ListView extends Component {
           style={{ fontSize: '14px' }}
           subtitle={`${comment.voteScore} score, by ${comment.author}`}
         />
-        <RaisedButton label="↑" />
-        <RaisedButton label="↓" />
+        <RaisedButton label="↑" onClick={() => this.props.voteCommentUp(comment.id)} />
+        <RaisedButton label="↓" onClick={() => this.props.voteCommentDown(comment.id)} />
         <RaisedButton label="Edit" />
         <RaisedButton label="Delete" />
       </Card>
@@ -67,7 +69,7 @@ class ListView extends Component {
     const { comments } = this.props;
 
     return (
-      <Card key={post.id} expanded={this.state.showComments}>
+      <Card key={Math.random()} expanded={this.state.showComments}>
         <CardTitle
           title={post.title}
           style={{ cursor: "pointer" }}
@@ -117,6 +119,8 @@ function matchDispatchToProps(dispatch) {
     loadPostComments: postId => dispatch(fetchPostComments(postId)),
     votePostUp: postId => dispatch(votePostUp(postId)),
     votePostDown: postId => dispatch(votePostDown(postId)),
+    voteCommentUp: commentId => dispatch(voteCommentUp(commentId)),
+    voteCommentDown: commentId => dispatch(voteCommentDown(commentId))
   };
 }
 

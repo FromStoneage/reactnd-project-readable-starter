@@ -108,6 +108,8 @@ const createPost = (data) => {
 export default {
   votePostUp: votePost('upVote'),
   votePostDown: votePost('downVote'),
+  voteCommentUp: voteComment('upVote'),
+  voteCommentDown: voteComment('downVote'),
   getAllPosts,
   getAllCategories,
   getPostsByCategory,

@@ -8,6 +8,11 @@ import {
   EDIT_POST,
   VOTE_POST_UP,
   VOTE_POST_DOWN,
+  VOTE_COMMENT_UP,
+  VOTE_COMMENT_DOWN,
+  DELETE_COMMENT,
+  EDIT_COMMENT,
+  CREATE_COMMENT,
   SORT_POSTS
 } from "../actions";
 import { combineReducers } from "redux";
@@ -42,7 +47,22 @@ function posts (state = [{}], action) {
 }
 
 function comments(state = [], action) {
-  return action.type === GET_POST_COMMENTS ? action.comments : state;
+  const payload = action.comments
+  switch (action.type) {
+    case GET_POST_COMMENTS:
+      return payload
+    case DELETE_COMMENT:
+      return deleteObjectInArray(state, payload.id)
+    case EDIT_COMMENT:
+      return updateObjectInArray(state, payload, ['body', 'timestamp'])
+    case VOTE_COMMENT_UP:
+    case VOTE_COMMENT_DOWN:
+      return updateObjectInArray(state, payload, ['voteScore'])
+    case CREATE_COMMENT:
+      return addObjectToArray(state, payload)
+    default:
+      return state
+  }
 }
 
 function addCommentsToPost (posts, comments) {
