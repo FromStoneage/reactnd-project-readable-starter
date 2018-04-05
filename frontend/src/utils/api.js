@@ -7,65 +7,67 @@ if (!token)
 
 const headers = {
   'Accept': 'application/json',
+  'Content-Type': 'application/json', // wow missing this header caused POST votes not working, took over 2 hrs wasted!
   'Authorization': token
 }
 
-export const getAllPosts = () =>
+const getAllPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
 
-export const getAllCategories = () =>
+const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })
     .then(res => res.json())
     .then(data => data.categories)
 
-export const getPostsByCategory = (category) =>
+const getPostsByCategory = (category) =>
   fetch(`${api}/${category}/posts`, { headers })
     .then(res => res.json())
 
-export const getPostById = (postId) =>
+const getPostById = (postId) =>
   fetch(`${api}/posts/${postId}`, { headers })
     .then(res => res.json())
 
-export const getPostComments = (postId) =>
+const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
     .then(res => res.json())
 
-export const deletePost = (postId) =>
+const deletePost = (postId) =>
   fetch(`${api}/posts/${postId}`, {
     headers,
     method: 'DELETE'
   }).then(res => res.json())
 
-export const editPost = (postId, data) =>
+const editPost = (postId, data) =>
   fetch(`${api}/posts/${postId}`, {
     headers,
     method: 'PUT',
     body: JSON.stringify(data)
   }).then(res => res.json())
 
-export const votePost = (vote, postId) => {
-  fetch(`${api}/posts/${postId}`, {
+const votePost = (vote) => (postId) => {
+  console.log('vote', vote)
+  return fetch(`${api}/posts/${postId}`, {
     headers,
     method: 'POST',
-    body: JSON.stringify({ option: vote })
-  }).then(res => console.log(res.json()))
+    body: JSON.stringify({option: vote})
+  }).then(res => res.json())
 }
 
-export const deleteComment = (commentId) =>
+const deleteComment = (commentId) =>
   fetch(`${api}/comments/${commentId}`, {
     headers,
     method: 'DELETE'
   }).then(res => res.json())
 
-export const editComment = (commentId, data) =>
+const editComment = (commentId, data) =>
   fetch(`${api}/comments/${commentId}`, {
     headers,
     method: 'PUT',
     body: JSON.stringify(data)
   }).then(res => res.json())
 
-export const voteComment = (vote) => (commentId) => {
+const voteComment = (vote) => (commentId) => {
   return fetch(`${api}/comments/${commentId}`, {
     headers,
     method: 'POST',
@@ -81,7 +83,7 @@ function generateUUID() {
   })
 }
 
-export const createComment = (data) => {
+const createComment = (data) => {
   data.timestamp = Date.now()
   data.id = generateUUID()
 
@@ -92,7 +94,7 @@ export const createComment = (data) => {
   }).then(res => res.json())
 }
 
-export const createPost = (data) => {
+const createPost = (data) => {
   data.timestamp = Date.now()
   data.id = generateUUID()
 
@@ -101,4 +103,21 @@ export const createPost = (data) => {
     method: 'POST',
     body: JSON.stringify(data)
   }).then(res => res.json())
+}
+
+export default {
+  votePostUp: votePost('upVote'),
+  votePostDown: votePost('downVote'),
+  getAllPosts,
+  getAllCategories,
+  getPostsByCategory,
+  getPostById,
+  getPostComments,
+  deletePost,
+  editPost,
+  deleteComment,
+  editComment,
+  voteComment,
+  createComment,
+  createPost
 }

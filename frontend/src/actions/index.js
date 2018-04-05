@@ -1,4 +1,4 @@
-import * as Api from "../utils/api";
+import Api from "../utils/api";
 
 export const UPDATE_CATEGORIES = "UPDATE_CATEGORIES";
 export const GET_ALL_POSTS = "GET_ALL_POSTS";
@@ -62,9 +62,15 @@ export const fetchPostComments = postId => dispatch => {
   );
 };
 
-export const votePost = (vote, postId) => dispatch => {
-  Api.votePost(vote, postId).then(posts =>
-    dispatch(updatePostVote(VOTE_POST_UP, posts))
+export const votePostUp = postId => dispatch => {
+  Api.votePostUp(postId).then(post => {
+    dispatch(updatePostVote(VOTE_POST_UP, post));
+  });
+};
+
+export const votePostDown = postId => dispatch => {
+  Api.votePostDown(postId).then(post =>
+    dispatch(updatePostVote(VOTE_POST_DOWN, post))
   );
 };
 
