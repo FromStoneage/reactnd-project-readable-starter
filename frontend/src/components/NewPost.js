@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Card, CardActions, CardTitle } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
+import api from "../utils/api";
 
 class NewPost extends Component {
   constructor(props) {
@@ -13,39 +13,46 @@ class NewPost extends Component {
       title: '',
       body: '',
       author: '',
-      selectedCategory: undefined,
+      category: undefined,
     }
   }
 
-  handleCategoryChange = (event, index, selectedCategory) => {
-    this.setState({ selectedCategory });
+  handleCategoryChange = (event, index, category) => {
+    this.setState({ category });
   };
 
   render() {
     const { categories } = this.props;
+    console.log('post', categories)
     return (
-      <Card key={Math.random()}>
-        <CardTitle title="New Post" />
+      <Card key="new-post">
+        <CardTitle title="New title" />
         <CardActions>
-          <TextField hintText="Title here" floatingLabelText="Title" />
+          <TextField 
+            id="new-title"
+            hintText="New title here" 
+            floatingLabelText="New title" />
           <br />
-          <TextField
-            multiLine={true}
-            rows={4}
-            hintText="Body here"
-            floatingLabelText="Body"
-          />
+          <TextField 
+            id="new-body"
+            hintText="New body here" 
+            floatingLabelText="New body" />
           <br />
-          <TextField hintText="Author here" floatingLabelText="Author" />
+          <TextField 
+            id="new-comment-author"
+            hintText="Author here" 
+            floatingLabelText="Author" />
           <br />
           <SelectField
+            id="category-new-post"
             floatingLabelText="Select a category"
-            value={this.state.selectedCategory}
+            value={this.state.category}
             onChange={this.handleCategoryChange}
           >
             {categories.map(category => {
               return (
                 <MenuItem
+                  id={category.name}
                   key={category.name}
                   value={category.name}
                   primaryText={category.name}
@@ -55,7 +62,7 @@ class NewPost extends Component {
           </SelectField>
         </CardActions>
         <RaisedButton
-          label="Create New Post"
+          label="Create New Comment"
           onClick={() => console.log("submit")}
         />
       </Card>
@@ -63,8 +70,4 @@ class NewPost extends Component {
   }
 }
 
-function mapStateToProps({ categories }) {
-  return { categories }
-}
-
-export default connect(mapStateToProps)(NewPost);
+export default NewPost;

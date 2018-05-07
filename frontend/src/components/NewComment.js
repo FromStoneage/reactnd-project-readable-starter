@@ -12,14 +12,39 @@ class NewComment extends Component {
     }
   }
 
+  handleCommentChange = (event) => {
+    this.setState({
+      comment: event.target.value,
+    });
+  };
+
+  handleAuthorChange = (event) => {
+    this.setState({
+      author: event.target.value,
+    });
+  };
+
   render() {
+    const { posts } = this.props;
+    console.log('post', posts[0].id)
     return (
-      <Card key={Math.random()}>
+      <div>
+      <Card key={posts[0].id}>
         <CardTitle title="New Comment" />
         <CardActions>
-          <TextField hintText="New Comment here" floatingLabelText="New Comment" />
+          <TextField 
+            id="new-comment"
+            value={this.state.comment}
+            onChange={this.handleCommentChange}
+            hintText="New Comment here" 
+            floatingLabelText="New Comment" />
           <br />
-          <TextField hintText="Author here" floatingLabelText="Author" />
+          <TextField 
+            id="new-comment-author"
+            value={this.state.author}
+            onChange={this.handleAuthorChange}
+            hintText="Author here" 
+            floatingLabelText="Author" />
           <br />
         </CardActions>
         <RaisedButton
@@ -27,6 +52,7 @@ class NewComment extends Component {
           onClick={() => console.log("submit")}
         />
       </Card>
+      </div>
     )
   }
 }

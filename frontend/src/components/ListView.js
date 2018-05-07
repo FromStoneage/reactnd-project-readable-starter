@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Card, CardActions, CardTitle, CardText } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
 //actions
 import {
   fetchPosts,
@@ -119,14 +116,14 @@ class ListView extends Component {
       </Card>
     );
   }
-  
+
   render() {
-    const { posts } = this.props;
+    const { posts, categories } = this.props;
 
     const view = this.state.isSinglePostView ? (
-      <NewComment />
+      <NewComment posts={posts} />
     ) : (
-      <NewPost />
+      <NewPost categories={categories} />
     )
 
     return (
@@ -138,10 +135,11 @@ class ListView extends Component {
   }
 }
 
-function mapStateToProps({ posts, comments }) {
+function mapStateToProps({ posts, comments, categories }) {
   return {
     posts,
-    comments
+    comments,
+    categories
   };
 }
 
