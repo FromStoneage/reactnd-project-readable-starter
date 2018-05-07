@@ -42,18 +42,18 @@ class App extends Component {
   }
 }
 
-function matchStateToProps({ categories }) {
+function mapStateToProps({ categories }) {
   return {
     categories
   };
 }
 
-function matchDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     loadCategories: () => dispatch(fetchCategories())
   };
 }
 
 export default withRouter(
-  connect(matchStateToProps, matchDispatchToProps)(App)
+  connect(mapStateToProps, mapDispatchToProps)(App)
 );

@@ -18,6 +18,9 @@ import {
   voteCommentDown
 } from "../actions";
 
+import NewComment from "./NewComment";
+import NewPost from "./NewPost";
+
 class ListView extends Component {
   constructor(props) {
     super(props);
@@ -46,10 +49,6 @@ class ListView extends Component {
 
   handleCallToRouter = post => {
     this.props.history.push(`/${post.category}/${post.id}`);
-  };
-
-  handleCategoryChange = (event, index, selectedCategory) => {
-    this.setState({ selectedCategory });
   };
 
   loadPostComments = post => {
@@ -120,80 +119,26 @@ class ListView extends Component {
       </Card>
     );
   }
-
-  renderNewComment() {
-    return (
-      <Card key={Math.random()}>
-        <CardTitle title="New Comment" />
-        <CardActions>
-          <TextField hintText="New Comment here" floatingLabelText="New Comment" />
-          <br />
-          <TextField hintText="Author here" floatingLabelText="Author" />
-          <br />
-        </CardActions>
-        <RaisedButton
-          label="Create New Comment"
-          onClick={() => console.log("submit")}
-        />
-      </Card>
-    )
-  }
-
-  renderNewPost() {
-    const { categories } = this.props;
-    console.log("categories", categories);
-    return (
-      <Card key={Math.random()}>
-        <CardTitle title="New Post" />
-        <CardActions>
-          <TextField hintText="Title here" floatingLabelText="Title" />
-          <br />
-          <TextField
-            multiLine={true}
-            rows={4}
-            hintText="Body here"
-            floatingLabelText="Body"
-          />
-          <br />
-          <TextField hintText="Author here" floatingLabelText="Author" />
-          <br />
-          <SelectField
-            floatingLabelText="Select a category"
-            value={this.state.selectedCategory}
-            onChange={this.handleCategoryChange}
-          >
-            {categories.map(category => {
-              return (
-                <MenuItem
-                  key={category.name}
-                  value={category.name}
-                  primaryText={category.name}
-                />
-              );
-            })}
-          </SelectField>
-        </CardActions>
-        <RaisedButton
-          label="Create New Post"
-          onClick={() => console.log("submit")}
-        />
-      </Card>
-    );
-  }
-
+  
   render() {
     const { posts } = this.props;
+
+    const view = this.state.isSinglePostView ? (
+      <NewComment />
+    ) : (
+      <NewPost />
+    )
 
     return (
       <div>
         {posts.map(post => this.renderPost(post))}
-        {this.state.isSinglePostView? this.renderNewComment():this.renderNewPost()}
+        {view}
       </div>
     );
   }
 }
 
-function matchStateToProps({ posts, comments }) {
+function mapStateToProps({ posts, comments }) {
   return {
     posts,
     comments
@@ -214,5 +159,5 @@ function matchDispatchToProps(dispatch) {
 }
 
 export default withRouter(
-  connect(matchStateToProps, matchDispatchToProps)(ListView)
+  connect(mapStateToProps, matchDispatchToProps)(ListView)
 );
