@@ -2,14 +2,19 @@ import React, { Component } from "react";
 import { Card, CardActions, CardTitle } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
+import {
+  createComment
+} from "../actions";
+
+const DEFAULT_STATE = {
+  comment: '',
+  author: '',
+}
 
 class NewComment extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      comment: '',
-      author: '',
-    }
+    this.state = DEFAULT_STATE
   }
 
   handleCommentChange = (event) => {
@@ -24,9 +29,23 @@ class NewComment extends Component {
     });
   };
 
+  newComment = (event) => {
+    const { dispatch, posts } = this.props
+    console.log('dispatch', dispatch, posts)
+    const data = {
+      body: this.state.comment,
+      author: this.state.author,
+      parentId: posts[0].id
+    }
+    dispatch(createComment(data));
+
+    event.preventDefault()
+
+    this.setState(DEFAULT_STATE)
+  }
+
   render() {
     const { posts } = this.props;
-    console.log('post', posts[0].id)
     return (
       <div>
       <Card key={posts[0].id}>
@@ -49,7 +68,7 @@ class NewComment extends Component {
         </CardActions>
         <RaisedButton
           label="Create New Comment"
-          onClick={() => console.log("submit")}
+          onClick={this.newComment.bind(this)}
         />
       </Card>
       </div>

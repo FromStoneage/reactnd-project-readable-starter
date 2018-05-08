@@ -12,7 +12,8 @@ import {
   votePostUp,
   votePostDown,
   voteCommentUp,
-  voteCommentDown
+  voteCommentDown,
+  deleteComment
 } from "../actions";
 
 import NewComment from "./NewComment";
@@ -72,7 +73,9 @@ class ListView extends Component {
           onClick={() => this.props.voteCommentDown(comment.id)}
         />
         <RaisedButton label="Edit" />
-        <RaisedButton label="Delete" />
+        <RaisedButton 
+          label="Delete"
+          onClick={() => this.props.deleteComment(comment.id)} />
       </Card>
     ) : (
       ""
@@ -152,7 +155,8 @@ function matchDispatchToProps(dispatch) {
     votePostUp: postId => dispatch(votePostUp(postId)),
     votePostDown: postId => dispatch(votePostDown(postId)),
     voteCommentUp: commentId => dispatch(voteCommentUp(commentId)),
-    voteCommentDown: commentId => dispatch(voteCommentDown(commentId))
+    voteCommentDown: commentId => dispatch(voteCommentDown(commentId)),
+    deleteComment: commentId => dispatch(deleteComment(commentId))
   };
 }
 
