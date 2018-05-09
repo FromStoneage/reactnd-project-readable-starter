@@ -106,9 +106,9 @@ export const createComment =  data => dispatch => {
   );
 };
 
-export function removePostById({ id }) {
-  return {
-    type: DELETE_POST,
-    id: id
-  };
-}
+export const deletePost = postId => dispatch => {
+  Api.deletePost(postId).then(id => 
+    dispatch(updatePosts(DELETE_POST, id))
+  );
+};
+
