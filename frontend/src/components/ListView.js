@@ -26,7 +26,8 @@ class ListView extends Component {
     this.state = {
       isSinglePostView: false,
       showComments: false,
-      selectedCategory: undefined
+      selectedCategory: undefined,
+      sortBy: 'vote'
     };
   }
 
@@ -134,8 +135,12 @@ class ListView extends Component {
     )
 
     return (
+      // TODO add sorting
       <div>
-        {posts.map(post => this.renderPost(post))}
+        <button onClick={() => this.setState({sortBy: 'vote'})}>Sort by Vote</button>
+        <button onClick={() => this.setState({sortBy:'date'})}>Sort by Date</button>
+        {posts.sort((f,s) => this.state.sortBy === 'date' ? s.timestamp - f.timestamp : s.voteScore - f.voteScore )
+              .map(post => this.renderPost(post))}
         {view}
       </div>
     );
