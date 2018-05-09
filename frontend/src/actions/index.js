@@ -32,11 +32,6 @@ export const updatePostComments = comments => ({
   comments
 });
 
-export const updatePostVote = (type, posts) => ({
-  type,
-  posts
-});
-
 export const updateCommentVote = (type, comments) => ({
   type,
   comments
@@ -72,13 +67,13 @@ export const fetchPostComments = postId => dispatch => {
 
 export const votePostUp = postId => dispatch => {
   Api.votePostUp(postId).then(post => {
-    dispatch(updatePostVote(VOTE_POST_UP, post));
+    dispatch(updatePosts(VOTE_POST_UP, post));
   });
 };
 
 export const votePostDown = postId => dispatch => {
   Api.votePostDown(postId).then(post =>
-    dispatch(updatePostVote(VOTE_POST_DOWN, post))
+    dispatch(updatePosts(VOTE_POST_DOWN, post))
   );
 };
 

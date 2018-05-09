@@ -43,7 +43,7 @@ class NewComment extends Component {
       parentId: posts[0].id
     }
 
-    this.props.createComment(data).then(console.log('created comment'))
+    api.createComment(data).then(this.setState(DEFAULT_STATE))
   }
 
   render() {

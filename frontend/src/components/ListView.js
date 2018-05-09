@@ -135,7 +135,6 @@ class ListView extends Component {
     )
 
     return (
-      // TODO add sorting
       <div>
         <button onClick={() => this.setState({sortBy: 'vote'})}>Sort by Vote</button>
         <button onClick={() => this.setState({sortBy:'date'})}>Sort by Date</button>
