@@ -7,6 +7,8 @@ import {
   createComment
 } from "../actions";
 
+import api from "../utils/api";
+
 const DEFAULT_STATE = {
   comment: '',
   author: '',
@@ -31,6 +33,8 @@ class NewComment extends Component {
   };
 
   newComment = (event) => {
+    
+    event.preventDefault()
     const { posts } = this.props
     
     const data = {
@@ -38,11 +42,8 @@ class NewComment extends Component {
       author: this.state.author,
       parentId: posts[0].id
     }
-    this.props.createComment(data);
 
-    event.preventDefault()
-
-    this.setState(DEFAULT_STATE)
+    this.props.createComment(data).then(console.log('created comment'))
   }
 
   render() {

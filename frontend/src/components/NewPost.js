@@ -78,7 +78,7 @@ class NewPost extends Component {
           </SelectField>
         </CardActions>
         <RaisedButton
-          label="Create New Comment"
+          label="Create New Post"
           onClick={this.submitNewPost}
         />
       </Card>

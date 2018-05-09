@@ -93,9 +93,8 @@ class ListView extends Component {
           title={post.title}
           style={{ cursor: "pointer" }}
           onClick={() => this.handleCallToRouter(post)}
-          subtitle={`${post.voteScore} score, posted in ${post.category} - by ${
-            post.author
-          }`}
+          subtitle={`${post.voteScore} score, posted in ${post.category} - by 
+            ${post.author} on ${new Date(post.timestamp).toLocaleString()}`}
         />
         <CardText>{post.body}</CardText>
         <CardActions>
