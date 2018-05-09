@@ -94,31 +94,17 @@ export const voteCommentDown = commentId => dispatch => {
   );
 };
 
-export const createComment =  data => dispatch => {
-  Api.createComment(data).then(comment =>
-    dispatch(updateCommentVote(CREATE_COMMENT, comment))
-  );
-};
-
 export const deleteComment = commentId => dispatch => {
   Api.deleteComment(commentId).then(id => 
     dispatch(updateCommentVote(DELETE_COMMENT, id))
   );
 };
 
-export function addPost({ title, body, author, category }) {
-  return {
-    type: ADD_POST,
-    id: Math.random()
-      .toString(36)
-      .substr(20),
-    timestamp: Date.now(),
-    title: title,
-    body: body,
-    author: author,
-    category: category
-  };
-}
+export const createComment =  data => dispatch => {
+  Api.createComment(data).then(comment =>
+    dispatch(updateCommentVote(CREATE_COMMENT, comment))
+  );
+};
 
 export function removePostById({ id }) {
   return {

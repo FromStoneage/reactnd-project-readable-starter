@@ -5,6 +5,8 @@ import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 
+import api from "../utils/api";
+
 class NewPost extends Component {
   constructor(props) {
     super(props);
@@ -20,25 +22,40 @@ class NewPost extends Component {
     this.setState({ category });
   };
 
+  handleChange = (event, index) => {
+    this.setState({ [event.target.id]: event.target.value })
+  };
+
+  submitNewPost = (event) => {
+    event.preventDefault();
+    const { onSubmit } = this.props;
+    api.createPost(this.state).then(() => onSubmit())
+  }
+
   render() {
     const { categories } = this.props;
-    console.log('post', categories)
     return (
       <Card key="new-post">
         <CardTitle title="New title" />
         <CardActions>
           <TextField 
-            id="new-title"
+            id="title"
+            value={this.state.title}
+            onChange={this.handleChange}
             hintText="New title here" 
             floatingLabelText="New title" />
           <br />
           <TextField 
-            id="new-body"
+            id="body"
+            value={this.state.body}
+            onChange={this.handleChange}
             hintText="New body here" 
             floatingLabelText="New body" />
           <br />
           <TextField 
-            id="new-comment-author"
+            id="author"
+            value={this.state.author}
+            onChange={this.handleChange}
             hintText="Author here" 
             floatingLabelText="Author" />
           <br />
@@ -62,7 +79,7 @@ class NewPost extends Component {
         </CardActions>
         <RaisedButton
           label="Create New Comment"
-          onClick={() => console.log("submit")}
+          onClick={this.submitNewPost}
         />
       </Card>
     )

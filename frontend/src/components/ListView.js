@@ -62,16 +62,18 @@ class ListView extends Component {
         <CardTitle
           title={comment.body}
           style={{ fontSize: "14px" }}
-          subtitle={`${comment.voteScore} score, by ${comment.author}`}
-        />
+          subtitle={`${comment.voteScore} score, by ${comment.author}`} />
         <RaisedButton
           label="↑"
-          onClick={() => this.props.voteCommentUp(comment.id)}
-        />
+          onClick={() => {
+            console.log('test')
+            this.props.voteCommentUp(comment.id)
+          }
+            
+          } />
         <RaisedButton
           label="↓"
-          onClick={() => this.props.voteCommentDown(comment.id)}
-        />
+          onClick={() => this.props.voteCommentDown(comment.id)} />
         <RaisedButton label="Edit" />
         <RaisedButton 
           label="Delete"
@@ -126,7 +128,7 @@ class ListView extends Component {
     const view = this.state.isSinglePostView ? (
       <NewComment posts={posts} />
     ) : (
-      <NewPost categories={categories} />
+      <NewPost categories={categories} onSubmit={this.props.loadPosts}  />
     )
 
     return (
@@ -146,7 +148,7 @@ function mapStateToProps({ posts, comments, categories }) {
   };
 }
 
-function matchDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     loadPosts: () => dispatch(fetchPosts()),
     loadPostsByCategory: category => dispatch(fetchPostsByCategory(category)),
@@ -161,5 +163,5 @@ function matchDispatchToProps(dispatch) {
 }
 
 export default withRouter(
-  connect(mapStateToProps, matchDispatchToProps)(ListView)
+  connect(mapStateToProps, mapDispatchToProps)(ListView)
 );

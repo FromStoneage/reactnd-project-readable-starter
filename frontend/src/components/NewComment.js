@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Card, CardActions, CardTitle } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
@@ -30,14 +31,14 @@ class NewComment extends Component {
   };
 
   newComment = (event) => {
-    const { dispatch, posts } = this.props
-    console.log('dispatch', dispatch, posts)
+    const { posts } = this.props
+    
     const data = {
       body: this.state.comment,
       author: this.state.author,
       parentId: posts[0].id
     }
-    dispatch(createComment(data));
+    this.props.createComment(data);
 
     event.preventDefault()
 
@@ -76,4 +77,10 @@ class NewComment extends Component {
   }
 }
 
-export default NewComment;
+function mapDispatchToProps(dispatch) {
+  return {
+    createComment: data => dispatch(createComment(data))
+  };
+}
+
+export default connect(mapDispatchToProps)(NewComment);
